@@ -16,9 +16,10 @@ exports.ReceiveDataEventGateway = void 0;
 const common_1 = require("@nestjs/common");
 const websockets_1 = require("@nestjs/websockets");
 const SocketEventNames_enum_1 = require("../SocketEventNames.enum");
+const socket_io_1 = require("socket.io");
 let ReceiveDataEventGateway = class ReceiveDataEventGateway {
-    async handleUserSpeedEvent(dto) {
-        this.server.in(dto.roomId).emit(SocketEventNames_enum_1.SocketEventNames.SEND_DATA_EVENT, dto.data);
+    async handleUserSpeedEvent(dto, client) {
+        client.broadcast.emit(SocketEventNames_enum_1.SocketEventNames.SEND_DATA_EVENT, dto.data);
         return dto;
     }
 };
@@ -30,8 +31,9 @@ __decorate([
 __decorate([
     (0, websockets_1.SubscribeMessage)(SocketEventNames_enum_1.SocketEventNames.SEND_DATA_EVENT),
     __param(0, (0, websockets_1.MessageBody)()),
+    __param(1, (0, websockets_1.ConnectedSocket)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, socket_io_1.Socket]),
     __metadata("design:returntype", Promise)
 ], ReceiveDataEventGateway.prototype, "handleUserSpeedEvent", null);
 exports.ReceiveDataEventGateway = ReceiveDataEventGateway = __decorate([
