@@ -14,6 +14,7 @@ function App() {
 
   const [isConnected, setIsConnected] = useState(false);
   const [incomingMessage, setIncomingMessage] = useState({ text: "Hi there!", sender: "bot" });
+  const [sendMessage, setSendMessage] = useState('');
 
 
 
@@ -62,12 +63,21 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    console.log(sendMessage)
+
+    socket.emit('send-data-event', {
+      roomId: "1",
+      data: sendMessage
+  });
+  }, [sendMessage]);
+
   console.log(isConnected)
   return (
     <>
 
 
-    <ChatUI incomingMessage={incomingMessage}  />
+    <ChatUI setSendMessage={setSendMessage} incomingMessage={incomingMessage}  />
        
     </>
   )

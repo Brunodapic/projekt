@@ -13,14 +13,14 @@ const messagesBegining: messageType[] = [
     { text: "How can I assist you today?", sender: "bot" },
 ];
 
-const ChatUI = ({incomingMessage}: {incomingMessage:messageType}) => {
+const ChatUI = ({ incomingMessage,setSendMessage }: { incomingMessage: messageType,setSendMessage:(inputMessage:string)=>void }) => {
     const [messages, setMessages] = useState(messagesBegining)
     const [input, setInput] = useState("");
 
     useEffect(() => {
         setMessages((prevMessages) => [...prevMessages, incomingMessage]);
     }, [incomingMessage])
-    
+
 
 
     const handleSend = () => {
@@ -28,6 +28,7 @@ const ChatUI = ({incomingMessage}: {incomingMessage:messageType}) => {
             console.log(input);
             const newMessage: messageType = { text: input, sender: "user" }; // Create a new user message
             setMessages((prevMessages) => [...prevMessages, newMessage]); // Add new message to the existing messages array
+            setSendMessage(input.trim())
             setInput("");
         }
     };
