@@ -25,7 +25,6 @@ export class JoinRoomEventGateway {
       socket.join(roomId);
     }
 
-    console.log(roomId);
     this.server.in(roomId).emit(SocketEventNames.JOIN_ROOM_EVENT, 'JOIN');
 
     return dto;

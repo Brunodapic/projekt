@@ -24,7 +24,6 @@ let JoinRoomEventGateway = class JoinRoomEventGateway {
         if (roomId && !socket.rooms.has(roomId)) {
             socket.join(roomId);
         }
-        console.log(roomId);
         this.server.in(roomId).emit(SocketEventNames_enum_1.SocketEventNames.JOIN_ROOM_EVENT, 'JOIN');
         return dto;
     }

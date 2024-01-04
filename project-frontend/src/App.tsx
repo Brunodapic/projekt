@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import { socket } from './socket';
 import ChatUI from './components/ChatUI';
+import InpurRoomId from './components/InpurRoomId';
 
 export interface ReceiveDataEventDto {
   roomId: string;
@@ -15,7 +16,8 @@ function App() {
   const [isConnected, setIsConnected] = useState(false);
   const [incomingMessage, setIncomingMessage] = useState({ text: "Hi there!", sender: "bot" });
   const [sendMessage, setSendMessage] = useState('');
-
+  const [roomId, setRoomId] = useState('1');
+  console.log(roomId)
 
 
   useEffect(() => {
@@ -67,16 +69,16 @@ function App() {
     console.log(sendMessage)
 
     socket.emit('send-data-event', {
-      roomId: "1",
+      roomId: roomId,
       data: sendMessage
   });
-  }, [sendMessage]);
+  }, [sendMessage,roomId]);
 
   console.log(isConnected)
   return (
     <>
 
-
+    <InpurRoomId  setRoomId={setRoomId}/>
     <ChatUI setSendMessage={setSendMessage} incomingMessage={incomingMessage}  />
        
     </>

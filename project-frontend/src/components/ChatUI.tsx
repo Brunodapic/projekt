@@ -37,8 +37,14 @@ const ChatUI = ({ incomingMessage,setSendMessage }: { incomingMessage: messageTy
         setInput(event.target.value);
     };
 
+    const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (event.key === 'Enter') {
+          handleSend();
+        }
+      };
+
     return (
-        <Box sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+        <Box sx={{ height: "80vh", display: "flex", flexDirection: "column" }}>
             <Box sx={{ flexGrow: 1, overflow: "auto", p: 2 }}>
                 {messages.map((message: messageType, index: number) => (
                     <Message key={index} message={message} />
@@ -52,6 +58,7 @@ const ChatUI = ({ incomingMessage,setSendMessage }: { incomingMessage: messageTy
                             placeholder="Type a message"
                             value={input}
                             onChange={handleInputChange}
+                            onKeyDown={handleEnterKeyPress}
                         />
                     </Grid>
                     <Grid item xs={2}>
