@@ -14,7 +14,6 @@ function App() {
   const [incomingMessage, setIncomingMessage] = useState({ text: 'Hi there!', sender: 'bot' });
   const [sendMessage, setSendMessage] = useState('');
   const [roomId, setRoomId] = useState('1');
-  const [prevRoomId, setPrevRoomId] = useState('0');
 
   const handleIncomingMessage = useCallback(
     (data: string) => {
@@ -37,7 +36,7 @@ function App() {
     socket.on(roomId, handleIncomingMessage);
 
     // Join the initial room
-    socket.emit('join-room-event', { prevRoomId,roomId });
+    socket.emit('join-room-event', { roomId });
 
     return () => {
       socket.off('connect', handleConnect);
@@ -46,7 +45,7 @@ function App() {
       socket.off('join-room-event', handleIncomingMessage);
 
     };
-  }, [roomId, handleConnect, handleDisconnect, handleIncomingMessage, prevRoomId]);
+  }, [roomId, handleConnect, handleDisconnect, handleIncomingMessage]);
 
   useEffect(() => {
     socket.emit('send-data-event', {
@@ -54,10 +53,6 @@ function App() {
       data: sendMessage
     });
   }, [sendMessage]);
-
-  useEffect(() => {
-    setPrevRoomId(roomId);
-  }, [roomId]);
 
 
   console.log(isConnected);
