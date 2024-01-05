@@ -20,9 +20,14 @@ export class JoinRoomEventGateway {
   ): JoinRoomEventDto {
     console.log(dto);
     const roomId = dto.roomId;
-
-    if (roomId && !socket.rooms.has(roomId)) {
-      socket.join(roomId);
+    const previousRoomId = dto.previousRoomId;
+    if (previousRoomId !== roomId) {
+      if (previousRoomId) {
+        socket.leave(previousRoomId);
+      }
+      if (roomId) {
+        socket.join(roomId);
+      }
     }
 
     this.server.in(roomId).emit(SocketEventNames.JOIN_ROOM_EVENT, 'JOIN');

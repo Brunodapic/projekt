@@ -6,7 +6,7 @@ interface Props {
     setRoomId: (newRoomId: string) => void
 }
 
-function InpurRoomId({ setRoomId }: Props) {
+function InputRoomId({ setRoomId }: Props) {
 
     const [rooms, setRooms] = useState(['1', '2'])
     const [inputValue, setInputValue] = useState('');
@@ -57,4 +57,4 @@ function InpurRoomId({ setRoomId }: Props) {
     );
 }
 
-export default InpurRoomId
+export default InputRoomId

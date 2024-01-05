@@ -18,10 +18,11 @@ export class ReceiveDataEventGateway {
   @SubscribeMessage(SocketEventNames.SEND_DATA_EVENT)
   async handleUserSpeedEvent(
     @MessageBody() dto: ReceiveDataEventDto,
-    @ConnectedSocket() client: Socket
+    @ConnectedSocket() socket: Socket
   ): Promise<ReceiveDataEventDto> {
     //this.server.in(dto.roomId).emit(SocketEventNames.SEND_DATA_EVENT, dto.data);
-    client.broadcast.emit(SocketEventNames.SEND_DATA_EVENT, dto.data);
+    console.log(dto)
+    socket.to(dto.roomId).emit(dto.roomId, dto.data);
 
     return dto;
   }

@@ -18,8 +18,9 @@ const websockets_1 = require("@nestjs/websockets");
 const SocketEventNames_enum_1 = require("../SocketEventNames.enum");
 const socket_io_1 = require("socket.io");
 let ReceiveDataEventGateway = class ReceiveDataEventGateway {
-    async handleUserSpeedEvent(dto, client) {
-        client.broadcast.emit(SocketEventNames_enum_1.SocketEventNames.SEND_DATA_EVENT, dto.data);
+    async handleUserSpeedEvent(dto, socket) {
+        console.log(dto);
+        socket.to(dto.roomId).emit(dto.roomId, dto.data);
         return dto;
     }
 };
