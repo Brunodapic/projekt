@@ -18,15 +18,11 @@ export class JoinRoomEventGateway {
     @MessageBody() dto: JoinRoomEventDto,
     @ConnectedSocket() socket: Socket,
   ): JoinRoomEventDto {
-    console.log(dto);
     const roomId = dto.roomId;
-
     if (roomId && !socket.rooms.has(roomId)) {
       socket.join(roomId);
     }
-
     this.server.in(roomId).emit(SocketEventNames.JOIN_ROOM_EVENT, 'JOIN');
-
     return dto;
   }
 }

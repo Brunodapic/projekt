@@ -1,14 +1,15 @@
 import { Autocomplete, Box, Button, TextField } from "@mui/material"
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 interface Props {
-    setRoomId: (newRoomId: string) => void
+    setRoomId: (newRoomId: string) => void,
+    sendMessage:string
 }
 
-function InputRoomId({ setRoomId }: Props) {
+function InputRoomId({ setRoomId,sendMessage }: Props) {
 
-    const [rooms, setRooms] = useState(['1', '2'])
+    const [rooms, setRooms] = useState(['1'])
     const [inputValue, setInputValue] = useState('');
 
 
@@ -18,25 +19,27 @@ function InputRoomId({ setRoomId }: Props) {
         }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = useCallback(() => {
         setRoomId(inputValue);
-    };
+    },[inputValue, setRoomId]);
 
 
     useEffect(() => {
         const getRooms = async () => {
-            const response = await axios.get('localhost:3000/rooms')
-            setRooms(rooms)
+            const response = await axios.get('http://localhost:3000/rooms');
+            console.log("resoponse: ",response.data)
+            setRooms(response.data)
             return response
         }
         getRooms()
 
-    }, [])
+    }, [handleSubmit,sendMessage])
 
 
     return (
         <Box sx={{ margin: "15px" }}>
             <Autocomplete
+                defaultValue={"1"}
                 value={inputValue}
                 onChange={(newValue) => {
                     if (typeof newValue === 'string') {

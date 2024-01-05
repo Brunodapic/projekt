@@ -9,11 +9,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReceiveDataEventModule = void 0;
 const common_1 = require("@nestjs/common");
 const receive_data_event_gateway_1 = require("./receive-data-event.gateway");
+const cache_manager_1 = require("@nestjs/cache-manager");
 let ReceiveDataEventModule = class ReceiveDataEventModule {
 };
 exports.ReceiveDataEventModule = ReceiveDataEventModule;
 exports.ReceiveDataEventModule = ReceiveDataEventModule = __decorate([
     (0, common_1.Module)({
+        imports: [cache_manager_1.CacheModule.register()],
         providers: [receive_data_event_gateway_1.ReceiveDataEventGateway],
     })
 ], ReceiveDataEventModule);

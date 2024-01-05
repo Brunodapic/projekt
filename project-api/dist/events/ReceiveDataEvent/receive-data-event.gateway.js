@@ -17,9 +17,16 @@ const common_1 = require("@nestjs/common");
 const websockets_1 = require("@nestjs/websockets");
 const SocketEventNames_enum_1 = require("../SocketEventNames.enum");
 const socket_io_1 = require("socket.io");
+const cache_manager_1 = require("@nestjs/cache-manager");
 let ReceiveDataEventGateway = class ReceiveDataEventGateway {
+    constructor(cacheManager) {
+        this.cacheManager = cacheManager;
+    }
     async handleUserSpeedEvent(dto, socket) {
-        console.log(dto);
+        const value = await this.cacheManager.get('rooms');
+        const updatedValue = value instanceof Set ? value : new Set('1');
+        updatedValue.add(dto.roomId);
+        await this.cacheManager.set('rooms', updatedValue, 0);
         socket.to(dto.roomId).emit(dto.roomId, dto.data);
         return dto;
     }
@@ -39,6 +46,8 @@ __decorate([
 ], ReceiveDataEventGateway.prototype, "handleUserSpeedEvent", null);
 exports.ReceiveDataEventGateway = ReceiveDataEventGateway = __decorate([
     (0, common_1.Injectable)(),
-    (0, websockets_1.WebSocketGateway)({ cors: true })
+    (0, websockets_1.WebSocketGateway)({ cors: true }),
+    __param(0, (0, common_1.Inject)(cache_manager_1.CACHE_MANAGER)),
+    __metadata("design:paramtypes", [Object])
 ], ReceiveDataEventGateway);
 //# sourceMappingURL=receive-data-event.gateway.js.map

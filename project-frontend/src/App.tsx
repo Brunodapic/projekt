@@ -52,14 +52,14 @@ function App() {
       roomId: roomId,
       data: sendMessage
     });
-  }, [sendMessage]);
+  }, [roomId, sendMessage]);
 
 
   console.log(isConnected);
 
   return (
     <>
-      <InputRoomId setRoomId={setRoomId} />
+      <InputRoomId setRoomId={setRoomId} sendMessage={sendMessage}/>
       <ChatUI setSendMessage={setSendMessage} incomingMessage={incomingMessage} />
     </>
   );

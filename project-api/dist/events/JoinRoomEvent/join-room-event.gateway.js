@@ -19,7 +19,6 @@ const socket_io_1 = require("socket.io");
 const SocketEventNames_enum_1 = require("../SocketEventNames.enum");
 let JoinRoomEventGateway = class JoinRoomEventGateway {
     handleRoomJoinEvent(dto, socket) {
-        console.log(dto);
         const roomId = dto.roomId;
         if (roomId && !socket.rooms.has(roomId)) {
             socket.join(roomId);

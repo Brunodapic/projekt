@@ -12,12 +12,13 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const join_room_event_gateway_1 = require("./events/JoinRoomEvent/join-room-event.gateway");
 const receive_data_event_module_1 = require("./events/ReceiveDataEvent/receive-data-event.module");
+const cache_manager_1 = require("@nestjs/cache-manager");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [receive_data_event_module_1.ReceiveDataEventModule, join_room_event_gateway_1.JoinRoomEventGateway],
+        imports: [receive_data_event_module_1.ReceiveDataEventModule, join_room_event_gateway_1.JoinRoomEventGateway, cache_manager_1.CacheModule.register()],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
