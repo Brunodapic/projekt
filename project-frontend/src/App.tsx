@@ -1,19 +1,23 @@
 import { useEffect, useState, useCallback } from 'react';
 import './App.css';
 import { socket } from './socket';
-import ChatUI from './components/ChatUI';
+import ChatUI, { messageType } from './components/ChatUI';
 import InputRoomId from './components/InputRoomId';
+import InputName from './components/InputName';
 
 export interface ReceiveDataEventDto {
   roomId: string;
   data: string;
 }
 
+
 function App() {
   const [isConnected, setIsConnected] = useState(false);
-  const [incomingMessage, setIncomingMessage] = useState({ text: 'Hi there!', sender: 'bot' });
+  const [incomingMessage, setIncomingMessage] = useState<messageType>();
   const [sendMessage, setSendMessage] = useState('');
   const [roomId, setRoomId] = useState('1');
+  const [username, setUsername] = useState('');
+
 
   const handleIncomingMessage = useCallback(
     (data: string) => {
@@ -48,19 +52,34 @@ function App() {
   }, [roomId, handleConnect, handleDisconnect, handleIncomingMessage]);
 
   useEffect(() => {
-    socket.emit('send-data-event', {
-      roomId: roomId,
-      data: sendMessage
-    });
+    if (sendMessage && sendMessage.trim() !== "") {
+      socket.emit('send-data-event', {
+        roomId: roomId,
+        data: sendMessage
+      });
+    }
+
   }, [roomId, sendMessage]);
+
+  useEffect(() => {
+    if (username.trim() !== '') {
+      socket.emit('send-data-event', {
+        roomId: roomId,
+        data: `${username} user joined ${roomId}`
+      });
+    }
+
+  }, [roomId, username]);
+
 
 
   console.log(isConnected);
 
   return (
     <>
-      <InputRoomId setRoomId={setRoomId} sendMessage={sendMessage}/>
-      <ChatUI setSendMessage={setSendMessage} incomingMessage={incomingMessage} />
+      <InputName setUsername={setUsername} />
+      <InputRoomId setRoomId={setRoomId} sendMessage={sendMessage} />
+      <ChatUI setSendMessage={setSendMessage} incomingMessage={incomingMessage} roomId={roomId} />
     </>
   );
 }

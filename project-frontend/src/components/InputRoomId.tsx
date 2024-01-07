@@ -27,7 +27,6 @@ function InputRoomId({ setRoomId,sendMessage }: Props) {
     useEffect(() => {
         const getRooms = async () => {
             const response = await axios.get('http://localhost:3000/rooms');
-            console.log("resoponse: ",response.data)
             setRooms(response.data)
             return response
         }

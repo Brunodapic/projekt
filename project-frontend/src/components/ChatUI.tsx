@@ -7,25 +7,23 @@ export interface messageType {
     text: string,
     sender: string
 }
-const messagesBegining: messageType[] = [
-    { text: "Hi there!", sender: "bot" },
-    { text: "Hello!", sender: "user" },
-    { text: "How can I assist you today?", sender: "bot" },
-];
+const messagesBegining: messageType[] = [];
 
-const ChatUI = ({ incomingMessage,setSendMessage }: { incomingMessage: messageType,setSendMessage:(inputMessage:string)=>void }) => {
+const ChatUI = ({ incomingMessage, setSendMessage, roomId }: { incomingMessage: messageType | undefined, setSendMessage: (inputMessage: string) => void, roomId: string }) => {
     const [messages, setMessages] = useState(messagesBegining)
     const [input, setInput] = useState("");
 
     useEffect(() => {
-        setMessages((prevMessages) => [...prevMessages, incomingMessage]);
+        if (incomingMessage) setMessages((prevMessages) => [...prevMessages, incomingMessage]);
     }, [incomingMessage])
 
+    useEffect(() => {
+        setMessages([]);
+    }, [roomId])
 
 
     const handleSend = () => {
         if (input.trim() !== "") {
-            console.log(input);
             const newMessage: messageType = { text: input, sender: "user" }; // Create a new user message
             setMessages((prevMessages) => [...prevMessages, newMessage]); // Add new message to the existing messages array
             setSendMessage(input.trim())
@@ -39,12 +37,12 @@ const ChatUI = ({ incomingMessage,setSendMessage }: { incomingMessage: messageTy
 
     const handleEnterKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
         if (event.key === 'Enter') {
-          handleSend();
+            handleSend();
         }
-      };
+    };
 
     return (
-        <Box sx={{ height: "80vh", display: "flex", flexDirection: "column" }}>
+        <Box sx={{ height: "75vh", display: "flex", flexDirection: "column" }}>
             <Box sx={{ flexGrow: 1, overflow: "auto", p: 2 }}>
                 {messages.map((message: messageType, index: number) => (
                     <Message key={index} message={message} />
@@ -63,6 +61,7 @@ const ChatUI = ({ incomingMessage,setSendMessage }: { incomingMessage: messageTy
                     </Grid>
                     <Grid item xs={2}>
                         <Button
+                            sx={{ width: "80px" }}
                             fullWidth
                             size="large"
                             color="primary"
