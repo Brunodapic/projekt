@@ -65,7 +65,7 @@ function App() {
     if (username.trim() !== '') {
       socket.emit('send-data-event', {
         roomId: roomId,
-        data: `${username} user joined ${roomId}`
+        data: `user ${username} joined ${roomId}`
       });
     }
 
